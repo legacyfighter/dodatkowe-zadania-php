@@ -141,6 +141,23 @@ class TaxRuleServiceTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function cannotDeleteARuleIfThatIsTheLastOne(): void
+    {
+        //given
+        $rule = TaxRule::linearRule(10, 10, "taxCode");
+        $config = $this->createConfigWithInitialRule("PL4", 2, $rule);
+
+        //expect
+        $this->expectException(\Exception::class);
+
+        //when
+        $this->service->deleteRule($rule->getId(), $config->getId());
+    }
+
+
+/**
      *
      */
     protected function setUp(): void
