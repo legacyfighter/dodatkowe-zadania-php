@@ -14,22 +14,17 @@ class OldProduct
     private $serialNumber;
 
     /**
-     * @var BigDecimal
+     * @var Price
      */
     private $price;
 
     /**
-     * @var string
+     * @var Description
      */
     private $desc;
 
     /**
-     * @var string
-     */
-    private $longDesc;
-
-    /**
-     * @var int
+     * @var Counter
      */
     private $counter;
 
@@ -43,10 +38,9 @@ class OldProduct
     public function __construct(?BigDecimal $price, ?string $desc, ?string $longDesc, ?int $counter)
     {
         $this->serialNumber = Uuid::uuid4();
-        $this->price = $price;
-        $this->desc = $desc;
-        $this->longDesc = $longDesc;
-        $this->counter = $counter;
+        $this->price = Price::of($price);
+        $this->desc = new Description($desc, $longDesc);
+        $this->counter = new Counter($counter);
     }
 
     /**
@@ -54,19 +48,10 @@ class OldProduct
      */
     public function decrementCounter(): void
     {
-        if ($this->price != null && $this->price->getSign() > 0) {
-            if ($this->counter === null) {
-                throw new \Exception("null counter");
-            }
-
-            $this->counter = $this->counter - 1;
-
-            if ($this->counter < 0) {
-                throw new \Exception("Negative counter");
-            }
+        if ($this->price->isNotZero()) {
+            $this->counter = $this->counter->decrement();
         } else {
-            throw new \Exception("Invalid price");
-
+            throw new \Exception("price is zero");
         }
     }
 
@@ -75,19 +60,12 @@ class OldProduct
      */
     public function incrementCounter(): void
     {
-        if ($this->price != null && $this->price->getSign() > 0) {
-            if ($this->counter === null) {
-                throw new \Exception("null counter");
-            }
-
-            if ($this->counter + 1 < 0) {
-                throw new \Exception("Negative counter");
-            }
-
-            $this->counter = $this->counter + 1;
+        if ($this->price->isNotZero()) {
+            $this->counter = $this->counter->increment();
         } else {
-            throw new \Exception("Invalid price");
+            throw new \Exception("price is zero");
         }
+
     }
 
     /**
@@ -96,16 +74,8 @@ class OldProduct
      */
     public function changePriceTo(?BigDecimal $newPrice): void
     {
-        if ($this->counter === null) {
-            throw new \Exception("null counter");
-        }
-
-        if ($this->counter > 0) {
-            if ($newPrice === null) {
-                throw new \Exception("new price null");
-            }
-
-            $this->price = $newPrice;
+        if ($this->counter->hasAny()) {
+            $this->price = Price::of($price);
         }
     }
 
@@ -116,23 +86,31 @@ class OldProduct
      */
     public function replaceCharFromDesc(?string $charToReplace, ?string $replaceWith): void
     {
-        if ($this->longDesc === null || empty($this->longDesc) || $this->desc === null || empty($this->desc)) {
-            throw new \Exception("null or empty desc");
-        }
-
-        $this->longDesc = str_replace($charToReplace, $replaceWith, $this->longDesc);
-        $this->desc = str_replace($charToReplace, $replaceWith, $this->desc);
+        $this->desc = $this->desc->replace($charToReplace, $replaceWith);
     }
 
     /**
      * @return string
      */
-    public function formatDesc(): string {
-        if ($this->longDesc === null || empty($this->longDesc) || $this->desc === null || empty($this->desc)) {
-            return "";
-        }
+    public function formatDesc(): string
+    {
+        return $this->desc->formatted();
+    }
 
-        return $this->desc . " *** " . $this->longDesc;
+    /**
+     * @return BigDecimal
+     */
+    public function getPrice(): BigDecimal
+    {
+        return $this->price->getAsBigDecimal();
+    }
+
+    /**
+     * @return int
+     */
+    public function getCounter(): int
+    {
+        return $this->counter->getIntValue();
     }
 }
 
