@@ -112,6 +112,14 @@ class OldProduct
     {
         return $this->counter->getIntValue();
     }
+
+    /**
+     * @return UuidInterface
+     */
+    public function serialNumber(): UuidInterface
+    {
+        return $this->serialNumber;
+    }
 }
 
 
