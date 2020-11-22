@@ -144,6 +144,11 @@ class TaxRuleService
         $this->taxConfigRepository->save($taxConfig);
     }
 
+    /**
+     * @param int $taxRuleId
+     * @param int $configId
+     * @throws \Exception
+     */
     public function deleteRule(int $taxRuleId, int $configId) {
         $taxRule = $this->taxRuleRepository->getOne($taxRuleId);
         $taxConfig = $this->taxConfigRepository->getOne($configId);
@@ -154,7 +159,9 @@ class TaxRuleService
             }
 
             $this->taxRuleRepository->delete($taxRule);
-            //$taxConfig->getTaxRules()->remove(taxRule);   IMPLEMENT!
+            $taxConfig->setTaxRules($taxConfig->getTaxRules()->filter(function (TaxRule $taxRule) use ($taxRuleId) {
+                return $taxRule->getId() != $taxRuleId;
+            }));
             $taxConfig->setLastModifiedDate(new \DateTime());
         }
 
