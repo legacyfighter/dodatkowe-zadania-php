@@ -75,7 +75,7 @@ class OldProduct
     public function changePriceTo(?BigDecimal $newPrice): void
     {
         if ($this->counter->hasAny()) {
-            $this->price = Price::of($price);
+            $this->price = Price::of($newPrice);
         }
     }
 

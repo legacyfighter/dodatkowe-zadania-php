@@ -33,4 +33,13 @@ class InMemory implements OldProductRepository
     {
         $this->products[$product->serialNumber()->toString()] = $product;
     }
+
+    /**
+     * @return array
+     */
+    function findAll(): array
+    {
+        return array_values($this->products);
+    }
+
 }

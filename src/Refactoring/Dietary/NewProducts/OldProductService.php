@@ -3,6 +3,8 @@
 namespace Refactoring\Dietary\NewProducts;
 
 use Brick\Math\BigDecimal;
+use phpstream\collectors\ArrayCollector;
+use phpstream\impl\MemoryStream;
 use Ramsey\Uuid\UuidInterface;
 
 class OldProductService
@@ -20,6 +22,19 @@ class OldProductService
     {
         $this->oldProductRepository = $oldProductRepository;
     }
+
+    /**
+     * @return array
+     */
+    public function findAllDescriptions(): array
+    {
+        return (new MemoryStream($this->oldProductRepository->findAll()))
+            ->map(function(OldProduct  $product) {
+                return $product->formatDesc();
+            })
+            ->collect(new ArrayCollector());
+    }
+
 
     /**
      * @param UuidInterface $productId
