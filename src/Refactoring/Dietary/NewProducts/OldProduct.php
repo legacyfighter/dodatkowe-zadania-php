@@ -75,7 +75,7 @@ class OldProduct
     public function changePriceTo(?BigDecimal $newPrice): void
     {
         if ($this->counter->hasAny()) {
-            $this->price = Price::of($price);
+            $this->price = Price::of($newPrice);
         }
     }
 
@@ -117,6 +117,14 @@ class OldProduct
      * @return UuidInterface
      */
     public function serialNumber(): UuidInterface
+    {
+        return $this->serialNumber;
+    }
+
+    /**
+     * @return UuidInterface
+     */
+    public function getId(): UuidInterface
     {
         return $this->serialNumber;
     }

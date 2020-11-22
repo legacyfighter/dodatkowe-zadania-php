@@ -8,5 +8,7 @@ interface OldProductRepository
 {
     public function getOne(UuidInterface $productId): ?OldProduct;
 
-    public function save(OldProduct $product): void;
+    public function save(OldProduct $product): OldProduct;
+
+    public function findAll(): array;
 }

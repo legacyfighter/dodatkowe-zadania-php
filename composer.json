@@ -7,6 +7,7 @@
     "require": {
         "ramsey/uuid": "^4.1",
         "brick/math": "^0.9.1",
-        "phpunit/phpunit": "^9.4"
+        "phpunit/phpunit": "^9.4",
+        "hguenot/phpstream": "^2.0"
     }
 }

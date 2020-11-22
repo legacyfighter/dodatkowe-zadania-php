@@ -29,8 +29,18 @@ class InMemory implements OldProductRepository
     /**
      * @param OldProduct $product
      */
-    public function save(OldProduct $product): void
+    public function save(OldProduct $product): OldProduct
     {
         $this->products[$product->serialNumber()->toString()] = $product;
+
+        return $product;
+    }
+
+    /**
+     * @return array
+     */
+    function findAll(): array
+    {
+        return array_values($this->products);
     }
 }
