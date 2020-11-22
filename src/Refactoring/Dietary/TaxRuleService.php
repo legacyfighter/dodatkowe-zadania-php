@@ -1,15 +1,8 @@
 <?php
 
-namespace Refactoring\Dietary\NewProducts;
+namespace Refactoring\Dietary;
 
 use Munus\Collection\GenericList;
-use Refactoring\Dietary\Order;
-use Refactoring\Dietary\OrderRepository;
-use Refactoring\Dietary\OrderState;
-use Refactoring\Dietary\TaxConfig;
-use Refactoring\Dietary\TaxConfigRepository;
-use Refactoring\Dietary\TaxRule;
-use Refactoring\Dietary\TaxRuleRepository;
 
 class TaxRuleService
 {
@@ -69,20 +62,11 @@ class TaxRuleService
             throw new \Exception("Too many rules");
         }
 
-        $taxConfig->getTaxRules()->append($taxRule);
+        $taxConfig->setTaxRules($taxConfig->getTaxRules()->append($taxRule));
         $taxConfig->setCurrentRulesCount($taxConfig->getCurrentRulesCount() + 1);
         $taxConfig->setLastModifiedDate(new \DateTime());
 
         $this->taxConfigRepository->save($taxConfig);
-
-//        $byOrderState = $this->orderRepository->findByOrderState(OrderState::INITIAL());
-//
-//        foreach ($byOrderState as $order) {
-//            if (ordergetCustomerOrderGroup().getCustomer().getType().equals(Customer.Type.Person)) {
-//                order.getTaxRules().add(taxRule);
-//                orderRepository.save(order);
-//            }
-//        }
     }
 
     /**
@@ -96,7 +80,7 @@ class TaxRuleService
         $taxConfig = new TaxConfig();
 
         $taxConfig->setCountryCode($countryCode);
-        $taxConfig->getTaxRules()->append($taxRule);
+        $taxConfig->setTaxRules($taxConfig->getTaxRules()->append($taxRule));
         $taxConfig->setCurrentRulesCount($taxConfig->getTaxRules()->length());
         $taxConfig->setMaxRulesCount(10);
         $taxConfig->setLastModifiedDate(new \DateTime());
@@ -115,7 +99,7 @@ class TaxRuleService
         $taxConfig = new TaxConfig();
 
         $taxConfig->setCountryCode($countryCode);
-        $taxConfig->getTaxRules()->append($taxRule);
+        $taxConfig->setTaxRules($taxConfig->getTaxRules()->append($taxRule));
         $taxConfig->setCurrentRulesCount($taxConfig->getTaxRules()->length());
         $taxConfig->setMaxRulesCount($maxRulesCount);
         $taxConfig->setLastModifiedDate(new \DateTime());
@@ -142,7 +126,7 @@ class TaxRuleService
         $taxRule = new TaxRule();
         $taxRule->setaSquareFactor($aFactor);
         $taxRule->setbSquareFactor($bFactor);
-        $taxRule->setcSuqreFactor($cFactor);
+        $taxRule->setcSquareFactor($cFactor);
         $taxRule->setSquare(true);
         $year = (int)date('Y');
         $taxRule->setTaxCode("A. 899. " . $year . $taxCode);
@@ -150,10 +134,10 @@ class TaxRuleService
         $taxConfig = $this->taxConfigRepository->findByCountryCode($countryCode);
 
         if ($taxConfig == null) {
-            $this->createTaxConfigWithRule($countryCode, $taxRule);
+            $taxConfig = $this->createTaxConfigWithRule($countryCode, $taxRule);
         }
 
-        $taxConfig->getTaxRules()->append($taxRule);
+        $taxConfig->setTaxRules($taxConfig->getTaxRules()->append($taxRule));
         $taxConfig->setCurrentRulesCount($taxConfig->getCurrentRulesCount() + 1);
         $taxConfig->setLastModifiedDate(new \DateTime());
 

@@ -2,8 +2,6 @@
 
 namespace Refactoring\Dietary\Repository;
 
-use phpstream\collectors\ArrayCollector;
-use phpstream\impl\MemoryStream;
 use Refactoring\Dietary\TaxConfig;
 use Refactoring\Dietary\TaxConfigRepository;
 
@@ -20,11 +18,16 @@ class InMemoryTaxConfigRepository implements TaxConfigRepository
      */
     public function findByCountryCode(string $countryCode): ?TaxConfig
     {
-        return (new MemoryStream($this->taxConfigs))
-            ->filter(function (TaxConfig $config) use ($countryCode) {
-                return $config->getCountryCode() == $countryCode;
-            })
-            ->collect(new ArrayCollector());
+        /**
+         * @var $taxConfig TaxConfig
+         */
+        foreach ($this->taxConfigs as $taxConfig) {
+            if ($taxConfig->getCountryCode() == $countryCode) {
+                return $taxConfig;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -42,6 +45,8 @@ class InMemoryTaxConfigRepository implements TaxConfigRepository
     public function save(TaxConfig $taxConfig): TaxConfig
     {
         $this->taxConfigs[$taxConfig->getId()] = $taxConfig;
+
+        return $taxConfig;
     }
 
     /**

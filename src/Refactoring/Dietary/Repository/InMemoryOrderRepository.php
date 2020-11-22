@@ -35,6 +35,8 @@ class InMemoryOrderRepository implements OrderRepository
     public function save(Order $order): Order
     {
         $this->orders[$order->getId()] = $order;
+
+        return $order;
     }
 
     /**

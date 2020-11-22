@@ -163,6 +163,22 @@ class TaxRule
     /**
      * @return int
      */
+    public function getaSquareFactor(): int
+    {
+        return $this->aSquareFactor;
+    }
+
+    /**
+     * @param int $aSquareFactor
+     */
+    public function setaSquareFactor(int $aSquareFactor): void
+    {
+        $this->aSquareFactor = $aSquareFactor;
+    }
+
+    /**
+     * @return int
+     */
     public function getbSquareFactor(): int
     {
         return $this->bSquareFactor;
