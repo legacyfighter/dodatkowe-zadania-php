@@ -45,34 +45,21 @@ class LeaveService
             throw new \InvalidArgumentException();
         }
 
-        $result = null;
+        $employee = $this->database->findByEmployeeId($employeeId);
+        $result = $employee->requestDaysOff($days);
 
-        $employeeData = $this->database->findByEmployeeId($employeeId);
+        if ($result->equals(Result::MANUAL())) {
+            $this->escalationManager->notifyNewPendingRequest($employeeId);
+        }
 
-        $employeeStatus = (string)$employeeData[0];
-        $daysSoFar = (int)$employeeData[1];
+        if ($result->equals(Result::DENIED())) {
+            $this->emailSender->send("next time");
+        }
 
-        if ($daysSoFar + $days > 26) {
+        if ($result->equals(Result::APPROVED())) {
+            $this->messageBus->sendEvent("request approved");
+            $this->database->save($employee);
 
-            if ($employeeStatus == "PERFORMER" && $daysSoFar + $days < 45) {
-                $result = Result::MANUAL();
-                $this->escalationManager->notifyNewPendingRequest($employeeId);
-            } else {
-                $result = Result::DENIED();
-                $this->emailSender->send("next time");
-            }
-
-        } else {
-
-            if ($employeeStatus == "SLACKER") {
-                $result = Result::DENIED();
-                $this->emailSender->send("next time");
-            } else {
-                $employeeData[1] = $daysSoFar + $days;
-                $result = Result::APPROVED();
-                $this->database->save($employeeData);
-                $this->messageBus->sendEvent("request approved");
-            }
         }
 
         return $result;

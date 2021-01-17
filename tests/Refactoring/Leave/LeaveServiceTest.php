@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Refactoring\Leave\EmailSender;
+use Refactoring\Leave\Employee;
 use Refactoring\Leave\EscalationManager;
 use Refactoring\Leave\LeaveDatabase;
 use Refactoring\Leave\LeaveService;
@@ -26,7 +27,7 @@ class LeaveServiceTest extends TestCase
     public function requests_of_performers_will_be_manually_processed_after_26th_day(): void
     {
         $database = $this->prophesize(LeaveDatabase::class);
-        $database->findByEmployeeId($this->ONE)->willReturn(["PERFORMER", 10]);
+        $database->findByEmployeeId($this->ONE)->willReturn(new Employee($this->ONE, "PERFORMER", 10));
 
         $messageBus = $this->prophesize(MessageBus::class);
         $messageBus->sendEvent(Argument::type('string'))->shouldNotBeCalled();
@@ -50,7 +51,7 @@ class LeaveServiceTest extends TestCase
     public function performers_cannot_get_more_than_45_days(): void
     {
         $database = $this->prophesize(LeaveDatabase::class);
-        $database->findByEmployeeId($this->ONE)->willReturn(["SLACKER", 10]);
+        $database->findByEmployeeId($this->ONE)->willReturn(new Employee($this->ONE, "PERFORMER", 10));
 
         $messageBus = $this->prophesize(MessageBus::class);
         $emailSender = $this->prophesize(EmailSender::class);
@@ -69,7 +70,7 @@ class LeaveServiceTest extends TestCase
     public function slackers_do_not_get_any_leave(): void
     {
         $database = $this->prophesize(LeaveDatabase::class);
-        $database->findByEmployeeId($this->ONE)->willReturn(["SLACKER", 10]);
+        $database->findByEmployeeId($this->ONE)->willReturn(new Employee($this->ONE, "SLACKER", 10));
 
         $messageBus = $this->prophesize(MessageBus::class);
         $emailSender = $this->prophesize(EmailSender::class);
@@ -88,7 +89,7 @@ class LeaveServiceTest extends TestCase
     public function slackers_get_a_nice_email(): void
     {
         $database = $this->prophesize(LeaveDatabase::class);
-        $database->findByEmployeeId($this->ONE)->willReturn(["SLACKER", 10]);
+        $database->findByEmployeeId($this->ONE)->willReturn(new Employee($this->ONE, "SLACKER", 10));
 
         $messageBus = $this->prophesize(MessageBus::class);
         $emailSender = $this->prophesize(EmailSender::class);
@@ -107,7 +108,7 @@ class LeaveServiceTest extends TestCase
     public function regular_employee_doesnt_get_more_than_26_days(): void
     {
         $database = $this->prophesize(LeaveDatabase::class);
-        $database->findByEmployeeId($this->ONE)->willReturn(["REGULAR", 10]);
+        $database->findByEmployeeId($this->ONE)->willReturn(new Employee($this->ONE, "REGULAR", 10));
 
         $messageBus = $this->prophesize(MessageBus::class);
         $messageBus->sendEvent(Argument::type('string'))->shouldNotBeCalled();
@@ -130,9 +131,11 @@ class LeaveServiceTest extends TestCase
      */
     public function regular_employee_gets_26_days(): void
     {
+        $regular = new Employee($this->ONE, "REGULAR", 10);
+
         $database = $this->prophesize(LeaveDatabase::class);
-        $database->findByEmployeeId($this->ONE)->willReturn(["REGULAR", 10]);
-        $database->save(["REGULAR", 15])->shouldBeCalled();
+        $database->findByEmployeeId($this->ONE)->willReturn($regular);
+        $database->save($regular)->shouldBeCalled();
 
         $messageBus = $this->prophesize(MessageBus::class);
         $messageBus->sendEvent('request approved')->shouldBeCalled();

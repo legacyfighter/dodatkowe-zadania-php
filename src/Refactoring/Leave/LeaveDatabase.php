@@ -4,12 +4,12 @@ namespace Refactoring\Leave;
 
 class LeaveDatabase
 {
-    public function findByEmployeeId(int $employeeId): array
+    public function findByEmployeeId(int $employeeId): ?Employee
     {
-        return [];
+        return null;
     }
 
-    public function save(array $employeeData): void
+    public function save(Employee $employeeData): void
     {
 
     }
