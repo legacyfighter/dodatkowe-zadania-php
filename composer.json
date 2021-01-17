@@ -6,6 +6,7 @@
     },
     "require": {
         "ramsey/uuid": "^4.1",
-        "brick/math": "^0.9.1"
+        "brick/math": "^0.9.1",
+        "myclabs/php-enum": "^1.7"
     }
 }
