@@ -6,7 +6,7 @@ class LeaveDatabase
 {
     public function findByEmployeeId(int $employeeId): array
     {
-        return [[]];
+        return [];
     }
 
     public function save(array $employeeData): void
