@@ -2,8 +2,6 @@
 
 namespace Tests\Refactoring\Leave;
 
-use PHPUnit\Framework\Error\Deprecated;
-use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -50,7 +48,7 @@ class LeaveServiceTest extends TestCase
     public function performers_cannot_get_more_than_45_days(): void
     {
         $database = $this->prophesize(LeaveDatabase::class);
-        $database->findByEmployeeId($this->ONE)->willReturn(["SLACKER", 10]);
+        $database->findByEmployeeId($this->ONE)->willReturn(["PERFORMER", 10]);
 
         $messageBus = $this->prophesize(MessageBus::class);
         $emailSender = $this->prophesize(EmailSender::class);
