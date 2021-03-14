@@ -8,46 +8,15 @@ use Ramsey\Uuid\UuidInterface;
 
 class OldProduct
 {
-    /**
-     * @var UuidInterface
-     */
     private $serialNumber;
 
-    /**
-     * @var BigDecimal
-     */
     private $price;
 
-    /**
-     * @var string
-     */
     private $desc;
 
-    /**
-     * @var string
-     */
     private $longDesc;
 
-    /**
-     * @var int
-     */
     private $counter;
-
-    /**
-     * OldProduct constructor.
-     * @param BigDecimal|null $price
-     * @param string|null $desc
-     * @param string|null $longDesc
-     * @param int|null $counter
-     */
-    public function __construct(?BigDecimal $price, ?string $desc, ?string $longDesc, ?int $counter)
-    {
-        $this->serialNumber = Uuid::uuid4();
-        $this->price = $price;
-        $this->desc = $desc;
-        $this->longDesc = $longDesc;
-        $this->counter = $counter;
-    }
 
     /**
      * @throws \Exception
@@ -55,12 +24,12 @@ class OldProduct
     public function decrementCounter(): void
     {
         if ($this->price != null && $this->price->getSign() > 0) {
-            if ($this->counter === null) {
+            if
+            ($this->counter === null) {
                 throw new \Exception("null counter");
             }
 
             $this->counter = $this->counter - 1;
-
             if ($this->counter < 0) {
                 throw new \Exception("Negative counter");
             }
@@ -68,6 +37,15 @@ class OldProduct
             throw new \Exception("Invalid price");
 
         }
+    }
+
+    public function __construct(?BigDecimal $price, ?string $desc, ?string $longDesc, ?int $counter)
+    {
+        $this->serialNumber = Uuid::uuid4();
+        $this->price = $price;
+        $this->desc = $desc;
+        $this->longDesc = $longDesc;
+        $this->counter = $counter;
     }
 
     /**
@@ -83,28 +61,24 @@ class OldProduct
             if ($this->counter + 1 < 0) {
                 throw new \Exception("Negative counter");
             }
-
             $this->counter = $this->counter + 1;
+
         } else {
             throw new \Exception("Invalid price");
+
         }
     }
 
-    /**
-     * @param BigDecimal|null $newPrice
-     * @throws \Exception
-     */
     public function changePriceTo(?BigDecimal $newPrice): void
     {
         if ($this->counter === null) {
             throw new \Exception("null counter");
         }
-
-        if ($this->counter > 0) {
+        if
+        ($this->counter > 0) {
             if ($newPrice === null) {
                 throw new \Exception("new price null");
             }
-
             $this->price = $newPrice;
         }
     }
@@ -116,10 +90,11 @@ class OldProduct
      */
     public function replaceCharFromDesc(?string $charToReplace, ?string $replaceWith): void
     {
-        if ($this->longDesc === null || empty($this->longDesc) || $this->desc === null || empty($this->desc)) {
+        if ($this->longDesc === null || empty($this->longDesc) ||
+
+            $this->desc === null || empty($this->desc)) {
             throw new \Exception("null or empty desc");
         }
-
         $this->longDesc = str_replace($charToReplace, $replaceWith, $this->longDesc);
         $this->desc = str_replace($charToReplace, $replaceWith, $this->desc);
     }
@@ -128,31 +103,14 @@ class OldProduct
      * @return string
      */
     public function formatDesc(): string {
-        if ($this->longDesc === null || empty($this->longDesc) || $this->desc === null || empty($this->desc)) {
+        if ($this->longDesc === null ||
+               empty($this->longDesc) ||
+               $this->desc === null
+               || empty($this->desc)) {
             return "";
         }
-
         return $this->desc . " *** " . $this->longDesc;
     }
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
