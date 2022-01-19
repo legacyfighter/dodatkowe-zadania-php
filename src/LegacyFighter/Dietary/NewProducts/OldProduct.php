@@ -1,10 +1,9 @@
 <?php
 
-namespace Refactoring\Dietary\NewProducts;
+namespace LegacyFighter\Dietary\NewProducts;
 
 use Brick\Math\BigDecimal;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 class OldProduct
 {
