@@ -1,9 +1,9 @@
 <?php
 
-namespace Refactoring\Dietary\Repository;
+namespace LegacyFighter\Dietary\Repository;
 
-use Refactoring\Dietary\TaxConfig;
-use Refactoring\Dietary\TaxConfigRepository;
+use LegacyFighter\Dietary\TaxConfig;
+use LegacyFighter\Dietary\TaxConfigRepository;
 
 class InMemoryTaxConfigRepository implements TaxConfigRepository
 {

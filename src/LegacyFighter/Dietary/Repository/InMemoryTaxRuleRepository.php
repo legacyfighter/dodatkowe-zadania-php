@@ -1,16 +1,16 @@
 <?php
 
-namespace Refactoring\Dietary\Repository;
+namespace LegacyFighter\Dietary\Repository;
 
 use Munus\Collection\GenericList;
 use Munus\Collection\Stream\Collector\GenericCollector;
 use Munus\Control\Either;
 use phpstream\collectors\ArrayCollector;
 use phpstream\impl\MemoryStream;
-use Refactoring\Dietary\TaxConfig;
-use Refactoring\Dietary\TaxConfigRepository;
-use Refactoring\Dietary\TaxRule;
-use Refactoring\Dietary\TaxRuleRepository;
+use LegacyFighter\Dietary\TaxConfig;
+use LegacyFighter\Dietary\TaxConfigRepository;
+use LegacyFighter\Dietary\TaxRule;
+use LegacyFighter\Dietary\TaxRuleRepository;
 
 class InMemoryTaxRuleRepository implements TaxRuleRepository
 {

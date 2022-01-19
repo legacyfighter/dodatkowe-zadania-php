@@ -1,6 +1,6 @@
 <?php
 
-namespace Refactoring\Dietary;
+namespace LegacyFighter\Dietary;
 
 use Brick\Math\BigDecimal;
 

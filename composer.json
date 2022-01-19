@@ -7,9 +7,11 @@
     "require": {
         "ramsey/uuid": "^4.1",
         "brick/math": "^0.9.1",
-        "phpunit/phpunit": "^9.4",
         "hguenot/phpstream": "^2.0",
         "myclabs/php-enum": "^1.7",
-        "munusphp/munus": "^0.2.2"
+        "munusphp/munus": "^0.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.4"
     }
 }

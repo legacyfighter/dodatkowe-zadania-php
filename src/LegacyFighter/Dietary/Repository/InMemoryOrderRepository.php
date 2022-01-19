@@ -1,12 +1,12 @@
 <?php
 
-namespace Refactoring\Dietary\Repository;
+namespace LegacyFighter\Dietary\Repository;
 
 use phpstream\collectors\ArrayCollector;
 use phpstream\impl\MemoryStream;
-use Refactoring\Dietary\Order;
-use Refactoring\Dietary\OrderRepository;
-use Refactoring\Dietary\OrderState;
+use LegacyFighter\Dietary\Order;
+use LegacyFighter\Dietary\OrderRepository;
+use LegacyFighter\Dietary\OrderState;
 
 class InMemoryOrderRepository implements OrderRepository
 {
