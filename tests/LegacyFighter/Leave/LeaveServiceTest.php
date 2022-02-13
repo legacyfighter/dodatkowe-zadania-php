@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\Refactoring\Leave;
+namespace Tests\LegacyFighter\Leave;
 
 use PHPUnit\Framework\Error\Deprecated;
 use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Refactoring\Leave\EmailSender;
-use Refactoring\Leave\Employee;
-use Refactoring\Leave\EscalationManager;
-use Refactoring\Leave\LeaveDatabase;
-use Refactoring\Leave\LeaveService;
-use Refactoring\Leave\MessageBus;
-use Refactoring\Leave\Result;
+use LegacyFighter\Leave\EmailSender;
+use LegacyFighter\Leave\Employee;
+use LegacyFighter\Leave\EscalationManager;
+use LegacyFighter\Leave\LeaveDatabase;
+use LegacyFighter\Leave\LeaveService;
+use LegacyFighter\Leave\MessageBus;
+use LegacyFighter\Leave\Result;
 
 class LeaveServiceTest extends TestCase
 {
