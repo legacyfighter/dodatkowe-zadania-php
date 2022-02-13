@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Refactoring\Dietary\NewProducts;
+namespace Tests\LegacyFighter\Dietary\NewProducts;
 
 use Brick\Math\BigDecimal;
 use PHPUnit\Framework\TestCase;
-use Refactoring\Dietary\NewProducts\OldProduct;
-use Refactoring\Dietary\NewProducts\OldProductDescription;
+use LegacyFighter\Dietary\NewProducts\OldProduct;
+use LegacyFighter\Dietary\NewProducts\OldProductDescription;
 
 class OldProductDescriptionTest extends TestCase
 {

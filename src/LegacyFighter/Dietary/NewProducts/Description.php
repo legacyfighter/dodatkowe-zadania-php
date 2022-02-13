@@ -1,6 +1,6 @@
 <?php
 
-namespace Refactoring\Dietary\NewProducts;
+namespace LegacyFighter\Dietary\NewProducts;
 
 class Description {
 

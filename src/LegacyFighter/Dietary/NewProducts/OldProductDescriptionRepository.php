@@ -1,6 +1,6 @@
 <?php
 
-namespace Refactoring\Dietary\NewProducts;
+namespace LegacyFighter\Dietary\NewProducts;
 
 use phpstream\collectors\ArrayCollector;
 use phpstream\impl\MemoryStream;
