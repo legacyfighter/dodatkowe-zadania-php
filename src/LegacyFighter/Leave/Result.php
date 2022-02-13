@@ -1,6 +1,6 @@
 <?php
 
-namespace Refactoring\Leave;
+namespace LegacyFighter\Leave;
 
 use MyCLabs\Enum\Enum;
 
