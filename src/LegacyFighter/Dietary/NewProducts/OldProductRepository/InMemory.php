@@ -1,10 +1,10 @@
 <?php
 
-namespace Refactoring\Dietary\NewProducts\OldProductRepository;
+namespace LegacyFighter\Dietary\NewProducts\OldProductRepository;
 
 use Ramsey\Uuid\UuidInterface;
-use Refactoring\Dietary\NewProducts\OldProduct;
-use Refactoring\Dietary\NewProducts\OldProductRepository;
+use LegacyFighter\Dietary\NewProducts\OldProduct;
+use LegacyFighter\Dietary\NewProducts\OldProductRepository;
 
 class InMemory implements OldProductRepository
 {
