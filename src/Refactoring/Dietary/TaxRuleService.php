@@ -58,13 +58,7 @@ class TaxRuleService
             return;
         }
 
-        if ($taxConfig->getMaxRulesCount() <= $taxConfig->getTaxRules()->length()) {
-            throw new \Exception("Too many rules");
-        }
-
-        $taxConfig->setTaxRules($taxConfig->getTaxRules()->append($taxRule));
-        $taxConfig->setCurrentRulesCount($taxConfig->getCurrentRulesCount() + 1);
-        $taxConfig->setLastModifiedDate(new \DateTime());
+        $taxConfig->add($taxRule);
 
         $this->taxConfigRepository->save($taxConfig);
     }
@@ -77,17 +71,13 @@ class TaxRuleService
      */
     public function createTaxConfigWithRule(string $countryCode, TaxRule $taxRule): TaxConfig
     {
-        $taxConfig = new TaxConfig();
-
-        $taxConfig->setCountryCode($countryCode);
-        $taxConfig->setTaxRules($taxConfig->getTaxRules()->append($taxRule));
-        $taxConfig->setCurrentRulesCount($taxConfig->getTaxRules()->length());
-        $taxConfig->setMaxRulesCount(10);
-        $taxConfig->setLastModifiedDate(new \DateTime());
-
         if ($countryCode == null || $countryCode == "" || strlen($countryCode) == 1) {
             throw new \Exception("Invalid country code");
         }
+
+        $taxConfig = new TaxConfig(10, $countryCode);
+
+        $taxConfig->add($taxRule);
 
         $this->taxConfigRepository->save($taxConfig);
 
@@ -96,17 +86,13 @@ class TaxRuleService
 
     public function createTaxConfigWithRuleAndMaxCount(string $countryCode, int $maxRulesCount, TaxRule $taxRule): TaxConfig
     {
-        $taxConfig = new TaxConfig();
-
-        $taxConfig->setCountryCode($countryCode);
-        $taxConfig->setTaxRules($taxConfig->getTaxRules()->append($taxRule));
-        $taxConfig->setCurrentRulesCount($taxConfig->getTaxRules()->length());
-        $taxConfig->setMaxRulesCount($maxRulesCount);
-        $taxConfig->setLastModifiedDate(new \DateTime());
-
         if ($countryCode == null || $countryCode == "" || strlen($countryCode) == 1) {
             throw new \Exception("Invalid country code");
         }
+
+        $taxConfig = new TaxConfig($maxRulesCount, $countryCode);
+
+        $taxConfig->add($taxRule);
 
         $this->taxConfigRepository->save($taxConfig);
 
@@ -137,9 +123,7 @@ class TaxRuleService
             $taxConfig = $this->createTaxConfigWithRule($countryCode, $taxRule);
         }
 
-        $taxConfig->setTaxRules($taxConfig->getTaxRules()->append($taxRule));
-        $taxConfig->setCurrentRulesCount($taxConfig->getCurrentRulesCount() + 1);
-        $taxConfig->setLastModifiedDate(new \DateTime());
+        $taxConfig->add($taxRule);
 
         $this->taxConfigRepository->save($taxConfig);
     }
@@ -153,18 +137,9 @@ class TaxRuleService
         $taxRule = $this->taxRuleRepository->getOne($taxRuleId);
         $taxConfig = $this->taxConfigRepository->getOne($configId);
 
-        if ($taxConfig->getTaxRules()->contains($taxRule)) {
-            if ($taxConfig->getTaxRules()->length() == 1) {
-                throw new \Exception("Last rule in country config");
-            }
+        $taxConfig->remove($taxRule);
 
-            $this->taxRuleRepository->delete($taxRule);
-            $taxConfig->setTaxRules($taxConfig->getTaxRules()->filter(function (TaxRule $taxRule) use ($taxRuleId) {
-                return $taxRule->getId() != $taxRuleId;
-            }));
-            $taxConfig->setLastModifiedDate(new \DateTime());
-        }
-
+        $this->taxRuleRepository->delete($taxRule);
         $this->taxConfigRepository->save($taxConfig);
     }
 

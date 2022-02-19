@@ -49,12 +49,41 @@ class TaxConfig
     /**
      * TaxConfig constructor.
      */
-    public function __construct()
+    public function __construct(int $maxRulesCount, String $countryCode)
     {
         $this->id = random_int(0, PHP_INT_MAX); // SHORTCUT
         $this->taxRules = GenericList::empty();
+        $this->maxRulesCount = $maxRulesCount;
+        $this->countryCode = $countryCode;
     }
 
+    public function add(TaxRule $taxRule): void
+    {
+        if ($this->maxRulesCount <= $this->taxRules->length()) {
+            throw new \Exception("Too many rules");
+        }
+
+        $this->taxRules = $this->taxRules->append($taxRule);
+        $this->currentRulesCount++;
+        $this->lastModifiedDate = new \DateTime();
+    }
+
+    public function remove(TaxRule $taxRule): void
+    {
+        $taxRuleId = $taxRule->getId();
+
+        if ($this->taxRules->contains($taxRule)) {
+            if ($this->taxRules->length() === 1) {
+                throw new \Exception("Last rule in country config");
+            }
+
+            $this->taxRules = $this->taxRules->filter(function (TaxRule $taxRule) use ($taxRuleId) {
+                return $taxRule->getId() !== $taxRuleId;
+            });
+            $this->currentRulesCount--;
+            $this->lastModifiedDate = new \DateTime();
+        }
+    }
 
     /**
      * @return string
@@ -62,14 +91,6 @@ class TaxConfig
     public function getDescription(): string
     {
         return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
     }
 
     /**
@@ -81,27 +102,11 @@ class TaxConfig
     }
 
     /**
-     * @param string $countryReason
-     */
-    public function setCountryReason(string $countryReason): void
-    {
-        $this->countryReason = $countryReason;
-    }
-
-    /**
      * @return string
      */
     public function getCountryCode(): string
     {
         return $this->countryCode;
-    }
-
-    /**
-     * @param string $countryCode
-     */
-    public function setCountryCode(string $countryCode): void
-    {
-        $this->countryCode = $countryCode;
     }
 
     /**
@@ -113,27 +118,11 @@ class TaxConfig
     }
 
     /**
-     * @param \DateTime $lastModifiedDate
-     */
-    public function setLastModifiedDate(\DateTime $lastModifiedDate): void
-    {
-        $this->lastModifiedDate = $lastModifiedDate;
-    }
-
-    /**
      * @return int
      */
     public function getCurrentRulesCount(): int
     {
         return $this->currentRulesCount;
-    }
-
-    /**
-     * @param int $currentRulesCount
-     */
-    public function setCurrentRulesCount(int $currentRulesCount): void
-    {
-        $this->currentRulesCount = $currentRulesCount;
     }
 
     /**
@@ -145,27 +134,11 @@ class TaxConfig
     }
 
     /**
-     * @param int $maxRulesCount
-     */
-    public function setMaxRulesCount(int $maxRulesCount): void
-    {
-        $this->maxRulesCount = $maxRulesCount;
-    }
-
-    /**
      * @return GenericList
      */
     public function getTaxRules(): GenericList
     {
-        return $this->taxRules;
-    }
-
-    /**
-     * @param GenericList $taxRules
-     */
-    public function setTaxRules(GenericList $taxRules): void
-    {
-        $this->taxRules = $taxRules;
+        return $this->taxRules; // Zwrócenie niemutowalnej kolekcji
     }
 
     /**
