@@ -10,6 +10,6 @@
         "phpunit/phpunit": "^9.4",
         "hguenot/phpstream": "^2.0",
         "myclabs/php-enum": "^1.7",
-        "munusphp/munus": "^0.2.2"
+        "munusphp/munus": "^0.4"
     }
 }

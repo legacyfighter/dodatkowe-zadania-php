@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a47aa5467939d2a674b4fdf3c87b596d",
+    "content-hash": "daa1ff3cf26169ac50b453e041b71e0f",
     "packages": [
         {
             "name": "bentools/iterable-functions",
@@ -187,27 +187,27 @@
         },
         {
             "name": "munusphp/munus",
-            "version": "0.2.2",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/munusphp/munus.git",
-                "reference": "e9bef806c1136cb1275151809ea9f23b037d5c89"
+                "reference": "486f85ca7a8dbdcaac6b9ce4229c2f522b748169"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/munusphp/munus/zipball/e9bef806c1136cb1275151809ea9f23b037d5c89",
-                "reference": "e9bef806c1136cb1275151809ea9f23b037d5c89",
+                "url": "https://api.github.com/repos/munusphp/munus/zipball/486f85ca7a8dbdcaac6b9ce4229c2f522b748169",
+                "reference": "486f85ca7a8dbdcaac6b9ce4229c2f522b748169",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2"
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.15",
                 "phpstan/phpstan": "^0.12",
                 "phpunit/phpunit": "^8.4",
-                "psalm/plugin-phpunit": "^0.10",
-                "vimeo/psalm": "^3.12"
+                "psalm/plugin-phpunit": "^0.15",
+                "vimeo/psalm": "4.4.1"
             },
             "type": "library",
             "autoload": {
@@ -226,7 +226,11 @@
                 }
             ],
             "description": "Power of object-oriented programming with the elegance of functional programming.",
-            "time": "2020-06-27T08:30:28+00:00"
+            "support": {
+                "issues": "https://github.com/munusphp/munus/issues",
+                "source": "https://github.com/munusphp/munus/tree/0.4.0"
+            },
+            "time": "2021-02-10T23:52:39+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -2150,5 +2154,6 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.1.0"
 }
